@@ -390,8 +390,9 @@ const Form = () => {
 
                     }}> */}
                                 {/* <Link href='./RegistrationForm'> */}
+                                <Link to='/form/output'>
                                 <Button fullWidth className='proceed-button'>Find Lawyers</Button>
-                                
+                                </Link>
                             </Grid>
 
 
