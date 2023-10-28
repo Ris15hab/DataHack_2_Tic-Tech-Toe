@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
         const { firstName, lastName, email, password } = req.body;
         const userData = await User.findOne({ email })
         if (userData) {
-            res.status(400).json({ message: "Email is already in use!!" })
+            return res.status(400).json({ message: "Email is already in use!!" })
         }
         const user = new User({
             firstName,
@@ -17,7 +17,7 @@ const register = async (req, res, next) => {
             password
         });
         await user.save();
-        res.status(201).json({ message: "User registered successfully!" })
+        return res.status(201).json({ message: "User registered successfully!" })
     } catch (err) {
         next(err)
     }
@@ -28,11 +28,11 @@ const login = async (req, res, next) => {
         const { email, password } = req.body;
         const userData = await User.findOne({ email })
         if (!userData) {
-            res.status(201).json({ message: "invalid login credentials" });
+            return res.status(400).json({ message: "invalid login credentials" });
         }
         const isMatch = await bcrypt.compare(password, userData.password);
         if (!isMatch) {
-            res.status(201).json({ message: "invalid login credentials" });
+            return res.status(400).json({ message: "invalid login credentials" });
         }
         const token = jwt.sign({ userData }, process.env.SECRET_KEY)
         res.status(200).json({ message: "Successful login", token })

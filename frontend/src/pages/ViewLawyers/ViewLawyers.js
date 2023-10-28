@@ -142,7 +142,7 @@ const ViewLawyers = () => {
                             users.filter((user) => {
                                 return search.toLowerCase() === ""
                                     ? user
-                                    : (user.name.toLowerCase().includes(search) || user.description.toLowerCase().includes(search));
+                                    : (user.name.toLowerCase().includes(search));
                             }).map((values) =>
                             (
                                 <Grid item xs={12} lg={4} md={4}>

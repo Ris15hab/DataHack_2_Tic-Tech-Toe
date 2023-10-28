@@ -9,9 +9,13 @@ import { NavbarToggle } from 'flowbite-react/lib/esm/components/Navbar/NavbarTog
 
 // import '../styles/Home.css'
 import x from '../Images/icon.png'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 
 export default function Nav() {
+  const navigate = useNavigate();
+
   return (
     <Navbar
     fluid
@@ -33,7 +37,7 @@ export default function Nav() {
       <Button className='button'
       style={{
           width:100
-      }}>
+      }} onClick={()=>{navigate('/login')}}>
         Login
       </Button>
       <NavbarToggle />

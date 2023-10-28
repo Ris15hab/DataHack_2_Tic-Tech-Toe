@@ -1,14 +1,75 @@
-import React from 'react'
+import {React,useState} from 'react'
 import Paper from '@mui/material/Paper';
 import { Box } from '@mui/system';
 import './sign.css'
 import { TextField, Typography } from '@mui/material';
 import { Button } from '@mui/base';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import Particle from '../../Components/Particle';
+import Swal from 'sweetalert2'
+import axios from 'axios';
 
 
 const Sign = () => {
+    const [firstName , setFirstName] = useState('');
+    const [lastName , setLastName] = useState('');
+    const [email , setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    // const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleRegister = async() =>{
+        try{
+            if(!firstName||!lastName||!email||!password){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Fill All fields',
+                })
+            }else{
+                const response = await axios.post("http://localhost:8000/user/register",{
+                    firstName,
+                    lastName,
+                    email,
+                    password
+                });
+                if(response.status == 201){
+                    setTimeout(() => {
+                        navigate('/login')  
+                    }, 1500);
+                    Swal.fire(
+                        'YAYY!',
+                        'Successful Registration',
+                        'success'
+                    )
+                }
+                else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
+            }
+        }catch(err){
+            console.log(err);
+            if(err.response.data.message.includes('Email is already in use!!')){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email already in use :(',
+                })
+            }
+            else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+            }
+        }
+    }
+
   return (
     <div>
         <Box style={{ zIndex: 1, position: 'relative' }}>
@@ -25,7 +86,7 @@ const Sign = () => {
     
     }}>
         
-        <Paper elevation={2}  className = 'paper-sign' >
+        <Paper elevation={1}  className = 'paper-sign' >
             <Box  >
             <Box display="flex" flexDirection="column" alignItems="center">
             <Typography variant='h3' style={{
@@ -43,7 +104,7 @@ const Sign = () => {
             }}>
                     First Name:
             </Typography>
-            <TextField fullWidth className='text-field'>
+            <TextField fullWidth className='text-field' onChange={e=>setFirstName(e.target.value)}>
             </TextField>
             <Typography variant = 'h6' sx={{
                 marginTop:'1em',
@@ -51,7 +112,7 @@ const Sign = () => {
             }}>
                     Last Name:
             </Typography>
-            <TextField fullWidth className='text-field'>
+            <TextField fullWidth className='text-field' onChange={e=>setLastName(e.target.value)}>
             </TextField>
             <Typography variant = 'h6' sx={{
                 marginTop:'1em',
@@ -59,7 +120,7 @@ const Sign = () => {
             }}>
                     email:
             </Typography>
-            <TextField fullWidth className='text-field'>
+            <TextField fullWidth className='text-field' onChange={e=>setEmail(e.target.value)}>
             </TextField>
             <Typography variant = 'h6' sx={{
                 marginTop:'1em',
@@ -68,23 +129,23 @@ const Sign = () => {
             }}>
                     password:
             </Typography>
-            <TextField fullWidth className='text-field'>
+            <TextField fullWidth className='text-field' onChange={e=>setPassword(e.target.value)}>
             </TextField>
-            <Typography variant = 'h6' sx={{
+            {/* <Typography variant = 'h6' sx={{
                 marginTop:'1em',
                 fontWeight:'600'
 
             }}>
                     Confirm password:
-            </Typography>
-            <TextField fullWidth className='text-field'>
-            </TextField>
+            </Typography> */}
+            {/* <TextField fullWidth className='text-field'>
+            </TextField> */}
             <Box display='flex' flexDirection='column' alignItems='center' >
-                <Link to ='/'>
-                <Button className='button-sign-up' fullWidth>
+                {/* <Link to ='/'> */}
+                <Button className='button-sign-up' fullWidth onClick={handleRegister}>
                         Sign Up
                     </Button>
-                </Link>
+                {/* </Link> */}
                    
                    
             </Box>
