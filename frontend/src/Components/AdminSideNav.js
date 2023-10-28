@@ -26,10 +26,10 @@ import Tooltip from '@mui/material/Tooltip';
 import { Grid } from '@mui/material';
 // import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 // import Link from 'next/link';
-import GavelIcon from '@mui/icons-material/Gavel';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import ReplyIcon from '@mui/icons-material/Reply';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
@@ -111,7 +111,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const settings = ['Profile', 'Account', 'name', 'Logout'];
 
-const NavAdmin = () => {
+const AdminSideNav = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -227,41 +227,7 @@ const NavAdmin = () => {
       </DrawerHeader>
       <Divider />
       <List>
-          
-
-      
-          {/* <Link to='/dashboard' className='link'>
-            <ListItem  disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-              
-                sx={{minHeight: '10vh',
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                  // color: location.pathname === '/dashboard' ? 'orange' : 'black',
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                  
-                >
-      
-                  <PersonIcon/>
-                </ListItemIcon>
-                <ListItemText  sx={{ opacity: open ? 1 : 0 }} >
-                  Profile
-                </ListItemText>
-              </ListItemButton>
-              
-            </ListItem>
-             
-            
-          </Link> */}
-
-          <Link to='/lawyers'>
+          <Link to='/admin/requests'>
           <ListItem disablePadding sx={{ display: 'block' }}  onClick={handleDrawerOpen}>
             <ListItemButton
               onClick={handleOpenUsersDropdown}
@@ -280,10 +246,10 @@ const NavAdmin = () => {
                 }}
                
               >
-                <GavelIcon/>
+                <PersonIcon/>
               </ListItemIcon>
               <ListItemText sx={{ opacity: open ? 1 : 0 }}>
-                View Lawyers
+                User Requests
                 
               </ListItemText>
             </ListItemButton>
@@ -293,7 +259,7 @@ const NavAdmin = () => {
           
         
        
-          <Link to='/form'>
+          <Link to='/admin/dashboard'>
           <ListItem disablePadding sx={{ display: 'block' }} >
             <ListItemButton
               // onClick={handleOpenLabelsDropdown} 
@@ -311,11 +277,11 @@ const NavAdmin = () => {
                   justifyContent: 'center',
                 }}
               >
-                <ReplyIcon/>
+                <DashboardIcon/>
               </ListItemIcon>
               <ListItemText sx={{ opacity: open ? 1 : 0 }}>
                 
-               Find Lawyers
+              Lawyer Dashboard
               </ListItemText>
             </ListItemButton>
            
@@ -323,7 +289,7 @@ const NavAdmin = () => {
           </Link>
           
           
-          <Link to='/feedback'>
+          <Link to='/admin/analytics'>
           <ListItem disablePadding sx={{ display: 'block' }} >
             <ListItemButton
               className='list-items' // Open Dashboard dropdown
@@ -340,10 +306,10 @@ const NavAdmin = () => {
                   justifyContent: 'center',
                 }}
               >
-                <ThumbUpOffAltIcon/>
+                <BarChartIcon/>
               </ListItemIcon>
               <ListItemText sx={{ opacity: open ? 1 : 0 }}>
-                Feedback
+                Analytics
               </ListItemText>
             </ListItemButton>
           </ListItem>
@@ -358,4 +324,4 @@ const NavAdmin = () => {
 }
 
 
-export default NavAdmin
+export default AdminSideNav

@@ -32,6 +32,26 @@ const citiesInIndia = [
     // Add more cities here
 ];
 
+const domainsinIndia=[
+    "Corporate Law",
+    "Consumer Protection Law",
+    "Labor Law",
+    "Criminal Law",
+    "Tax Law",
+    "Intellectual Property Law",
+    "Human Rights Law",
+    "Civil Law",
+    "Family Law",
+    "Media Entertainment Law",
+    "Real Estate Law",
+    "Constitutional Law",
+    "Medical Law",
+    "Banking Finance Law",
+    "Environmental Law",
+    "Immigration Law",
+
+]
+
 const languagesInIndia = [
     "Telugu",
     "Kannada",
@@ -62,6 +82,8 @@ const expertise = [
 ]
 
 const Form = () => {
+    const [values,setValues] =React.useState()
+
     const [selectedCity, setSelectedCity] = React.useState('');
 
     const handleCityChange = (event) => {
@@ -129,7 +151,7 @@ const Form = () => {
                                     marginBottom: '0.5em',
 
                                 }}>
-                                    Location*
+                                    Location <span style={{color:"red"}}>*</span>
                                 </Typography>
                                 <FormControl>
                
@@ -283,7 +305,7 @@ const Form = () => {
                                     fontWeight: '400',
                                     marginBottom: '0.5em'
                                 }}>
-                                    Area of Expertise
+                                    Domain
                                 </Typography>
                                 <FormControl>
                
@@ -304,7 +326,7 @@ const Form = () => {
                  name="subject"
                >
                                      {
-                expertise.map((expertise,index)=>(
+                domainsinIndia.map((expertise,index)=>(
                        <MenuItem key={index} value={expertise}>
                            {expertise}
                        </MenuItem>

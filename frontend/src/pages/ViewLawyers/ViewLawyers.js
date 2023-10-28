@@ -12,12 +12,54 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-
+import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 const ViewLawyers = () => {
 
     const [search, setSearch] = useState('')
+    const domainsinIndia=[
+        "Corporate Law",
+        "Consumer Protection Law",
+        "Labor Law",
+        "Criminal Law",
+        "Tax Law",
+        "Intellectual Property Law",
+        "Human Rights Law",
+        "Civil Law",
+        "Family Law",
+        "Media Entertainment Law",
+        "Real Estate Law",
+        "Constitutional Law",
+        "Medical Law",
+        "Banking Finance Law",
+        "Environmental Law",
+        "Immigration Law",
+
+    ]
+    const languagesInIndia = [
+        "Telugu",
+        "Kannada",
+        "Tamil",
+        "Urdu",
+        "Gujarati",
+        " Urdu",
+        "Malayalam",
+        "Hindi",
+        "Bengali",
+        "Punjabi",
+        "Assamese",
+        "Odia",
+        "Marathi",
+    
+    ];
+    const citiesInIndia = [
+        'Mumbai',
+        'Delhi',
+        'Bangalore',
+        'Hyderabad',
+        // Add more cities here
+    ];
     const [users, setUsers] = useState([{
         name: 'mahek upadhye',
         location: 'mumbai',
@@ -83,7 +125,7 @@ const ViewLawyers = () => {
 
 
                     <FormControl
-                        sx={{ m: 1, width: "43ch", marginLeft: "3vw" }}
+                        sx={{ m: 1, width: "40ch", marginLeft: "3vw" }}
                         variant="outlined"
                         value={search}
                         placeholder="  ...Search User..."
@@ -113,7 +155,7 @@ const ViewLawyers = () => {
                             id="demo-controlled-open-select"
                         >
                             <MenuItem value="">
-                                <em style={{ color: "#003B73" }}>Sort Age:</em>
+                                <em style={{ color: "#003B73" }}>Sort By Years</em>
                             </MenuItem>
                             <MenuItem value={10}>Hight to Low</MenuItem>
                             <MenuItem value={20}>Low to High</MenuItem>
@@ -129,12 +171,72 @@ const ViewLawyers = () => {
                             id="demo-controlled-open-select"
                         >
                             <MenuItem value="">
-                                <em style={{ color: "#003B73" }}>Sort Age:</em>
+                                <em style={{ color: "#003B73" }}>Sort By Rs</em>
                             </MenuItem>
                             <MenuItem value={10}>Hight to Low</MenuItem>
                             <MenuItem value={20}>Low to High</MenuItem>
                         </Select>
                     </FormControl>
+
+                    <FormControl sx={{ m: 1, minWidth: 140 }}>
+                      <InputLabel id="demo-controlled-open-select-label">Languages</InputLabel>
+                        <Select
+                            // value={age}
+                            // onChange={handleChange}
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                        >
+                            {
+                        languagesInIndia.map((language,index)=>(
+                        <MenuItem key={index} value={language}>
+                            {language}
+                        </MenuItem>
+                    ))
+                  }
+                        </Select>
+                    </FormControl>
+
+                    <FormControl sx={{ m: 1, minWidth: 140 }}>
+                      <InputLabel id="demo-controlled-open-select-label">Location</InputLabel>
+                        <Select
+                            // value={age}
+                            // onChange={handleChange}
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                        >
+                             {
+                        citiesInIndia.map((cities,index)=>(
+                        <MenuItem key={index} value={cities}>
+                            {cities}
+                        </MenuItem>
+                    ))
+                  }
+                        </Select>
+                    </FormControl>
+
+                    <FormControl sx={{ m: 1, minWidth: 140 }}>
+                      <InputLabel id="demo-controlled-open-select-label">Domain</InputLabel>
+                        <Select
+                            // value={age}
+                            // onChange={handleChange}
+                            labelId="demo-controlled-open-select-label"
+                            id="demo-controlled-open-select"
+                        >
+                            {
+                        domainsinIndia.map((domains,index)=>(
+                        <MenuItem key={index} value={domains}>
+                            {domains}
+                        </MenuItem>
+                    ))
+                  }
+                        </Select>
+                    </FormControl>
+                    <span>
+                    
+                    <SearchIcon sx={{marginBottom:"-5vh",marginLeft:"1vw",fontSize:"25px",cursor:"pointer"}}/>
+                    
+                    </span>
+                   
 
     
                     <Grid container spacing={0}>
