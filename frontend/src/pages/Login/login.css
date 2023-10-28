@@ -1,0 +1,58 @@
+.gradient
+{
+    
+/* background: radial-gradient(#66abec, #ffffff); */
+    z-index: 2 !important;
+}
+.particle
+{
+    z-index:1 !important
+}
+
+.paper
+{
+   
+        width: 30vw;
+        height:auto;
+        background-color:#f6f6f6 !important;
+        padding: 4em;
+        /* display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        justify-content: center; */
+
+}
+
+/* .text-field
+{
+   height: 1em !important
+} */
+
+.button-login
+{
+    background-color: #D6E6F2 !important;
+    margin-top: 3em;
+    color:#0c0a3c !important;
+    font-size: large !important;
+    font-weight: bolder !important;
+    width:  10vw !important;
+    border-radius: 5px;
+    height: 6vh !important
+
+
+    
+}
+
+.button-login:hover
+{
+    background-color:#02003E !important; 
+    color:#D6E6F2 !important;
+}
+
+.link-sign
+{
+    color:#342ee7;
+    font-style: italic;
+    
+}
