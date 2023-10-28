@@ -10,6 +10,21 @@ const add = async(req,res,next)=>{
     }
 }
 
+const getAllLawyer = async(req,res,next)=>{
+    try{
+        const data_per_page = parseInt(req.query.data_per_page) || 21;
+        const page_number = parseInt(req.query.page_number) || 1;
+        const offset = (page_number - 1) * data_per_page;
+        const lawyer = await Lawyer.find().skip(offset).limit(data_per_page);
+        if(lawyer.length ==0){
+            return res.status(400).json({message:"Data over"});
+        }
+        res.status(200).json({lawyer})
+    }catch(err){
+        next(err);
+    }
+}
+
 const getListOfDomains = async(req,res,next)=>{
     try{
         const listOfDomains = [];
@@ -74,10 +89,63 @@ const getListOfJurisdiction = async(req,res,next)=>{
     }
 }
 
+const getLawyerByExperience = async(req,res,next)=>{
+    try{
+        const data_per_page = parseInt(req.query.data_per_page) || 21;
+        const page_number = parseInt(req.query.page_number) || 1;
+        const offset = (page_number - 1) * data_per_page;
+        const {sort} = req.query;
+        const lawyer = await Lawyer.find({}).skip(offset).limit(data_per_page).sort({experience : sort});
+        if(lawyer.length ==0){
+            return res.status(400).json({message:"Data over"});
+        }
+        res.status(200).json({lawyer})
+    }catch(err){
+        next(err)
+    }
+}
+
+const getLawyerByCharge = async(req,res,next)=>{
+    try{
+        const data_per_page = parseInt(req.query.data_per_page) || 21;
+        const page_number = parseInt(req.query.page_number) || 1;
+        const offset = (page_number - 1) * data_per_page;
+        const {sort} = req.query;
+        const lawyer = await Lawyer.find({}).skip(offset).limit(data_per_page).sort({charges : sort});
+        if(lawyer.length ==0){
+            return res.status(400).json({message:"Data over"});
+        }
+        res.status(200).json({lawyer})
+    }catch(err){
+        next(err)
+    }
+}
+
+const getLawyerByLocation = async(req,res,next)=>{
+    try{
+        const data_per_page = parseInt(req.query.data_per_page) || 21;
+        const page_number = parseInt(req.query.page_number) || 1;
+        const offset = (page_number - 1) * data_per_page;
+        const lawyer = await Lawyer.find({location:req.query.location}).skip(offset).limit(data_per_page);
+        if(lawyer.length ==0){
+            return res.status(400).json({message:"Data over"});
+        }
+        res.status(200).json({lawyer})
+    }catch(err){
+        next(err);
+    }
+}
+
+
+
 module.exports = {
     add,
     getListOfDomains,
     getListOfCities,
     getListOfLanguages,
-    getListOfJurisdiction
+    getListOfJurisdiction,
+    getAllLawyer,
+    getLawyerByExperience,
+    getLawyerByCharge,
+    getLawyerByLocation
 }
