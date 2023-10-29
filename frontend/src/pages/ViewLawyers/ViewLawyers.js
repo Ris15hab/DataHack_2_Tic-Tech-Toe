@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import NavAdmin from '../../Components/NavAdmin'
 import { Box, Chip } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const ViewLawyers = () => {
 
@@ -60,51 +62,86 @@ const ViewLawyers = () => {
         'Hyderabad',
         // Add more cities here
     ];
-    const [users, setUsers] = useState([{
-        name: 'mahek upadhye',
-        location: 'mumbai',
-        yearsOfExperience:'5',
-        AreaOfExpertise:'Corporate Law',
-        Charges: 12356,
-        jusrisdiction:'high court',
-        probo:'yes',
-        languages:['hindi','english','marathi']
+    // const [users, setUsers] = useState([{
+    //     name: 'mahek upadhye',
+    //     location: 'mumbai',
+    //     yearsOfExperience:'5',
+    //     AreaOfExpertise:'Corporate Law',
+    //     Charges: 12356,
+    //     jusrisdiction:'high court',
+    //     probo:'yes',
+    //     languages:['hindi','english','marathi']
         
-    }, {
-        name: 'aasmi thadhani',
-        location: 'mumbai',
-        yearsOfExperience:'5',
-        AreaOfExpertise:'ai ml',
-        Charges: 12356,
-        jusrisdiction:'high court',
-        probo:'yes',
-        languages:['hindi','english','marathi']
+    // }, {
+    //     name: 'aasmi thadhani',
+    //     location: 'mumbai',
+    //     yearsOfExperience:'5',
+    //     AreaOfExpertise:'ai ml',
+    //     Charges: 12356,
+    //     jusrisdiction:'high court',
+    //     probo:'yes',
+    //     languages:['hindi','english','marathi']
         
 
-    }, {
-        name: 'rishab pendam',
-        location: 'mumbai',
-        yearsOfExperience:'5',
-        AreaOfExpertise:'ai ml',
-        Charges: 12356,
-        jusrisdiction:'high court',
-        probo:'yes',
-        languages:['hindi','english','marathi']
+    // }, {
+    //     name: 'rishab pendam',
+    //     location: 'mumbai',
+    //     yearsOfExperience:'5',
+    //     AreaOfExpertise:'ai ml',
+    //     Charges: 12356,
+    //     jusrisdiction:'high court',
+    //     probo:'yes',
+    //     languages:['hindi','english','marathi']
 
-    }, {
-        name: 'meet daftary',
-        location: 'mumbai',
-        yearsOfExperience:'5',
-        AreaOfExpertise:'ai ml',
-        Charges: 12356,
-        jusrisdiction:'high court',
-        probo:'yes',
-        languages:['hindi','english','marathi']
+    // }, {
+    //     name: 'meet daftary',
+    //     location: 'mumbai',
+    //     yearsOfExperience:'5',
+    //     AreaOfExpertise:'ai ml',
+    //     Charges: 12356,
+    //     jusrisdiction:'high court',
+    //     probo:'yes',
+    //     languages:['hindi','english','marathi']
 
-    }
-    ])
+    // }
+    // ])
+    const [pageNumber,setPageNumber] = useState(0);
+    const [users,setUsers] = useState([])
     const handleSearch = (e) => {
         setSearch(e.target.value)
+    }
+
+    const handleFilterSubmit = async(e)=>{
+        try{
+            const response = await axios.post("http://localhost:8000/lawyer/getLawyerByFilter",{inpval})
+        }catch(err){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        }
+    }
+
+    const [inpval, setInpval] = useState({
+        experience: "",
+        domain: "",
+        city: "",
+        language: "",
+        charges: ""
+    });
+
+    const handleChange = (e)=>{
+        const { value, name } = e.target;
+        console.log(value)
+        console.log(name)
+
+        setInpval((preval) => {
+          return {
+            ...preval,
+            [name]: value,
+          };
+        });
     }
 
     const DrawerHeader = styled('div')(({ theme }) => ({
@@ -115,6 +152,31 @@ const ViewLawyers = () => {
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
     }));
+    
+    const fetchData = async()=>{
+        try{
+            setPageNumber(pageNumber+1)
+            const response = await axios.get(`http://localhost:8000/lawyer/getAllLawyer?page_number=${pageNumber}`)
+            // console.log(response)
+            if(response.status == 200){
+                setUsers(response.data.lawyer)
+                // console.log(response)
+                // console.log(response.data.lawyer)
+            }
+            // console.log(users)
+        }catch(err){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            })
+        }
+    }
+    useEffect(()=>{
+        fetchData();
+    },[])
+
+    console.log(users)
     return (
         <Box sx={{ margin: '0px', padding: '0px', border: 'none' }}>
             <Box sx={{ display: 'flex' }}>
@@ -149,40 +211,43 @@ const ViewLawyers = () => {
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                       <InputLabel id="demo-controlled-open-select-label">Experience</InputLabel>
                         <Select
-                            // value={age}
-                            // onChange={handleChange}
+                            name="experience"
+                            value={inpval.experience}
+                            onChange={handleChange}
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
                             <MenuItem value="">
                                 <em style={{ color: "#003B73" }}>Sort By Years</em>
                             </MenuItem>
-                            <MenuItem value={10}>Hight to Low</MenuItem>
-                            <MenuItem value={20}>Low to High</MenuItem>
+                            <MenuItem name="experience" value={-1}>Hight to Low</MenuItem>
+                            <MenuItem value={1}>Low to High</MenuItem>
                         </Select>
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                       <InputLabel id="demo-controlled-open-select-label">Charges</InputLabel>
                         <Select
-                            // value={age}
-                            // onChange={handleChange}
+                            name="charges"
+                            value={inpval.charges}
+                            onChange={handleChange}
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
                             <MenuItem value="">
                                 <em style={{ color: "#003B73" }}>Sort By Rs</em>
                             </MenuItem>
-                            <MenuItem value={10}>Hight to Low</MenuItem>
-                            <MenuItem value={20}>Low to High</MenuItem>
+                            <MenuItem value={-1}>Hight to Low</MenuItem>
+                            <MenuItem value={1}>Low to High</MenuItem>
                         </Select>
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                       <InputLabel id="demo-controlled-open-select-label">Languages</InputLabel>
                         <Select
-                            // value={age}
-                            // onChange={handleChange}
+                            name="language"
+                            value={inpval.language}
+                            onChange={handleChange}
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
@@ -199,8 +264,9 @@ const ViewLawyers = () => {
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                       <InputLabel id="demo-controlled-open-select-label">Location</InputLabel>
                         <Select
-                            // value={age}
-                            // onChange={handleChange}
+                            name="city"
+                            value={inpval.city}
+                            onChange={handleChange}
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
@@ -217,8 +283,9 @@ const ViewLawyers = () => {
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
                       <InputLabel id="demo-controlled-open-select-label">Domain</InputLabel>
                         <Select
-                            // value={age}
-                            // onChange={handleChange}
+                            name="domain"
+                            value={inpval.domain}
+                            onChange={handleChange}
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
@@ -231,13 +298,11 @@ const ViewLawyers = () => {
                   }
                         </Select>
                     </FormControl>
-                    <span>
+                    <span onClick={handleFilterSubmit}>
                     
                     <SearchIcon sx={{marginBottom:"-5vh",marginLeft:"1vw",fontSize:"25px",cursor:"pointer"}}/>
                     
                     </span>
-                   
-
     
                     <Grid container spacing={0}>
                         {
@@ -264,14 +329,14 @@ const ViewLawyers = () => {
                                             <p>
                                                 <b>Years of Experience: </b>
 
-                                                {values.yearsOfExperience}
+                                                {values.experience}
                                             </p>
                                            
                                             <p style={{
                                                 marginTop:'0.3em'
                                             }}>
                                                <b> Charges(in Rs): </b>
-                                                {values.Charges}
+                                                {values.charges}
                                             </p>
                                             <p style={{
                                                 marginTop:'0.5em'
@@ -279,7 +344,7 @@ const ViewLawyers = () => {
                                               
                                               <b>Domain: </b>
 
-                                                {values.AreaOfExpertise}
+                                                {values.domain}
                                                
                                            </p>
                                            <p style={{
@@ -288,7 +353,7 @@ const ViewLawyers = () => {
                                               
                                               <b>Jurisdiction: </b>
 
-                                                {values.jusrisdiction}
+                                                {values.jurisdiction}
                                                
                                            </p>
                                            <p style={{
@@ -297,7 +362,7 @@ const ViewLawyers = () => {
                                               
                                               <b>Pro bono: </b>
 
-                                                {values.probono}
+                                                {values.proBono?'Yes':'No'}
                                                
                                            </p>
 
@@ -335,10 +400,12 @@ const ViewLawyers = () => {
 
                     </Grid>
 
+                    <div style={{marginTop:"2vh", display:'flex',float:'right',marginRight:'2vw'}}>
+                    <Button style={{backgroundColor: '#02003E'}} onClick={()=>fetchData()}>
+                        Next Page
+                    </Button>
 
-
-
-
+                    </div>
                 </Box>
             </Box>
         </Box>
