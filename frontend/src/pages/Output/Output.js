@@ -20,15 +20,30 @@ import { CssBaseline } from "@mui/material/styles";
 import { createTheme } from '@mui/material'
 import {Chip} from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-
+import Swal from 'sweetalert2'
 
 import y from './output.png'
 // import Image from 'next/image'
 // import PlanModal from '../PlanModal'
 
-import Modal from '@mui/material/Modal';
+// import Modal from '@mui/material/Modal';
 
 // import { Scrollbar } from 'react-scrollbars-custom';
+
+import { Modal } from '@mui/material';
+
+const style2 = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'White',
+    border: 'none',
+    boxShadow: 24,
+    p: 4,
+    width:'50vw'
+};
 
 const bull = (
     <Box
@@ -56,6 +71,10 @@ const style = {
 
 
 const Output = () => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
@@ -80,7 +99,7 @@ const Output = () => {
                     padding: '3em'
 
                 }}
-                    // columnSpacing={2}
+                                  // columnSpacing={2
                     // spacing={9}
                     //  style={{ paddingLeft: 200, paddingRight: 200 }}
                      >
@@ -175,7 +194,7 @@ const Output = () => {
                             </div><br /><br /> */}
                             {/* </CardContent> */}
                             <CardActions style={{ padding: 0 }}>
-                                <Button variant="contained" color="success"  style={{ width: 3000, height: 50, marginTop:'1em' }} className='proceed-button1'>
+                                <Button variant="contained" color="success" onClick={handleOpen} style={{ width: 3000, height: 50, marginTop:'1em' }} className='proceed-button1'>
                                     Contact
                                 </Button>
                             </CardActions>
@@ -205,7 +224,7 @@ const Output = () => {
                             </div><br /><br />
                             {/* </CardContent> */}
                             <CardActions style={{ padding: 0 }}>
-                                <Button variant="contained" color="success"      style={{ width: 3000, height: 50 }} className='create-account' >
+                                <Button variant="contained" color="success"    onClick={handleOpen}  style={{ width: 3000, height: 50 }} className='create-account' >
                                     Contact
                                 </Button>
                             </CardActions>
@@ -302,7 +321,7 @@ const Output = () => {
                             </div><br /><br /> */}
                             {/* </CardContent> */}
                             <CardActions style={{ padding: 0 }}>
-                                <Button variant="contained" color="success"  style={{ width: 3000, height: 50, marginTop:'1em' }} className='proceed-button1'>
+                                <Button variant="contained" color="success" onClick={handleOpen} style={{ width: 3000, height: 50, marginTop:'1em' }} className='proceed-button1'>
                                     Contact
                                 </Button>
                             </CardActions>
@@ -314,6 +333,43 @@ const Output = () => {
             {/* <img src={y} className='plan-image'/> */}
 
             </Box>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style2}>
+                    <Typography id="modal-modal-title" variant="h4" component="h2">
+                        Contact Us
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                       Describe your Issue:
+                    </Typography>
+                    <TextField multiline rows={8} fullWidth/>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                       Phone No:
+                    </Typography>
+                    <TextField fullWidth style={{ marginBottom:'1em'}}/>
+                    
+                    <Box display='flex' flexDirection='column' alignItems='center'>
+                    <Button className='proceed-button' onClick={()=>
+                    {
+                        handleClose()
+                        Swal.fire(
+                            'Good job!',
+                            'Contact sent Successfully',
+                            'success'
+                          )
+                    }}>
+                        Submit
+                    </Button>
+                    </Box>
+                    
+
+                </Box>
+            </Modal>
+            
         </Box>
     )
 }

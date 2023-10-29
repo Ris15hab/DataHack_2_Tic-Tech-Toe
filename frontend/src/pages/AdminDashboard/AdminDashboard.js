@@ -6,54 +6,120 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 import AdminSideNav from '../../Components/AdminSideNav';
 import { styled, useTheme } from '@mui/material/styles';
 import { Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+// import Box from '@mui/material/Box';
+import {Button} from '@mui/material';
 
 const AdminDashboard = () => {
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: 'id', headerName: 'ID', width: 200 },
     {
-      field: 'firstName',
-      headerName: 'First name',
+      field: 'name',
+      headerName: 'name',
       width: 150,
       editable: true,
     },
     {
-      field: 'lastName',
-      headerName: 'Last name',
-      width: 150,
+      field: 'domain',
+      headerName: 'Domain',
+      width: 200,
       editable: true,
     },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
+      field: 'jurisdiction',
+      headerName: 'Jurisdiction',
+      type: 'string',
+      width: 200,
+      editable: true,
+    },
+    {
+      field: 'location',
+      headerName: 'Location',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      
+    },
+    {
+      field: 'proBono',
+      headerName: 'probono',
+      type: 'bool',
       width: 110,
       editable: true,
     },
     {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+      field: 'experience',
+      headerName: 'Years Of Experience',
+      type: 'number',
+      width: 180,
+      editable: true,
     },
+    {
+      field: 'charges',
+      headerName: 'Charges',
+      type: 'number',
+      width: 110,
+      editable: true,
+    }
+
   ];
   
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
+  const handlebutton = () =>
+  {
+    
+  }
+
+
+  const [data, setData] = useState();
+  useEffect(() => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8000/lawyer/getAllLawyer",
+      headers: {},
+    };
+
+    async function makeRequest() {
+      try {
+        const response = await axios.request(config);
+        console.log(response.data.lawyer);
+        setData(response.data.lawyer);
+        // for (let i = 0; i < 100; i++) {
+        //   rows.push((response.data)[i].userId,(response.data)[i].id,(response.data)[i].title,(response.data)[i].body);
+        // }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    makeRequest();
+  }, []);
+
+console.log(data)
+
+const rows = data
+  ? data.map((item) => ({
+      id: item._id,
+      name: item.name,
+      jurisdiction: item.jurisdiction,
+      charges: item.charges,
+      domain: item.domain,
+      language: item.language,
+      proBono: item.proBono,
+      experience: item.experience,
+      location:item.location,
+      rating:item.rating
+    }))
+  : [];
+
+  console.log(rows);
+
 
   const DrawerHeader = styled('div')(({ theme }) => ({
+    
+
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
@@ -69,24 +135,24 @@ const AdminDashboard = () => {
 
         <Box component="main" sx={{ flexGrow: 1, pl: 3, pt: 3, pb: 3 }}>
           <DrawerHeader />
-          <Typography align='center' sx={{fontWeight:"bold",marginBottom:"5vh",fontSize:"25px"}}>Manage Lawyers</Typography>
-
-    <Box sx={{ height: 400, width: '65%',marginLeft:"18vw" ,display:"flex", align:"center"}}>
-    <DataGrid
-      rows={rows}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 5,
-          },
-        },
-      }}
-      pageSizeOptions={[5]}
-      checkboxSelection
-      disableRowSelectionOnClick
-    />
-  </Box>
+          <Typography align='center' sx={{fontWeight:"bold",marginBottom:"5vh",fontSize:"40px"}}>Manage Lawyers</Typography>
+          <Button className='proceed-button' style={{
+            marginBottom:'1em'
+          }} onClick={handlebutton}>Add</Button>
+          <>
+      {data ? (
+        <>
+          <div style={{ height: 1000, width: "100%" }}>
+            <DataGrid rows={rows} columns={columns} />
+          </div>
+          <hr></hr>
+          <hr></hr>
+          {/* <New></New> */}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   </Box>
   </Box>
   </Box>

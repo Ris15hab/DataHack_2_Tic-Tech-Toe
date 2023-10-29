@@ -173,7 +173,7 @@ const NavAdmin = () => {
                 fontWeight:'bolder',
                 fontSize:'30px'
             }}>
-                Lawyer
+                ByLaw
             </Typography>
             </Grid>
             <Grid item xs={4}>
@@ -207,7 +207,7 @@ const NavAdmin = () => {
 
             <MenuItem  onClick={handleCloseUserMenu}>
                 <LogoutOutlinedIcon/>
-              <Typography textAlign="center">Log out</Typography>
+             <Link to='/'><Typography textAlign="center">Log out</Typography></Link>
             </MenuItem>
           
         </Menu>

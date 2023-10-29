@@ -12,6 +12,8 @@ import { Button } from '@mui/base';
 import StarIcon from '@mui/icons-material/Star';
 import { TextField } from '@mui/material';
 
+import Swal from 'sweetalert2'
+
 
 const labels = {
   0.5: 'Useless',
@@ -28,6 +30,15 @@ const labels = {
 function getLabelText(value) {
   return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
 }
+
+const lawyerName=[
+  "Anay Ahluwalia",
+  "Arnav Dubey",
+  'Lavanya Lalla',
+  "Armaan Khosla",
+  "Advik Chaudry",
+  "Urvi Bedi"
+]
 
 
 
@@ -94,7 +105,13 @@ const Feedback = () => {
                   }}
                   name="subject"
                 >
-                  {/* {itemsSubject} */}
+                 {
+                    lawyerName.map((name,index)=>(
+                        <MenuItem key={name} value={name}>
+                            {name}
+                        </MenuItem>
+                    ))
+                  }
                 </Select>
               </FormControl>
           </Box>
@@ -153,7 +170,16 @@ const Feedback = () => {
         <div>
         <Button className='proceed-button' style={{
           marginTop:'2em'
-        }}>
+        }} onClick={()=>
+          {
+            Swal.fire(
+              'Good job!',
+              'Feedback sent Successfully',
+               'success'
+            )
+          }
+          
+        }>
           Submit
         </Button>
         </div>

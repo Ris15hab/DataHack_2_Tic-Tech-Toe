@@ -12,7 +12,7 @@ import x from '../Images/icon.png'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
-
+import GavelIcon from '@mui/icons-material/Gavel';
 export default function Nav() {
   const navigate = useNavigate();
 
@@ -24,14 +24,17 @@ export default function Nav() {
     
   >
     <NavbarBrand href="https://flowbite-react.com">
-      <img
+      {/* <img
         alt="logo"
         className="mr-3 h-6 sm:h-9"
         src={x}
-      />
+      /> */}
+      {/* <NavbarIcon> */}
+     
+   
+      
       <span className="self-center whitespace-nowrap text-xl text-white font-semibold dark:text-white color-[white]">
-       [Name]
-      </span>
+      <GavelIcon/> ByLaw      </span>
     </NavbarBrand>
     <div className="flex md:order-2">
       <Button className='button'

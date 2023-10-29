@@ -20,7 +20,10 @@ import { Grid, TextField } from '@mui/material'
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import InputAdornment from '@mui/material/InputAdornment';
 // import Link from 'next/link'\
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+import axios from 'axios';
+
 
 
 import './Form.css'
@@ -82,30 +85,102 @@ const expertise = [
 ]
 
 const Form = () => {
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async() =>{
+        try{
+            if(!selectedCity){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please Fill Location Field',
+                })
+            }else{
+                const response = await axios.post(URL,{
+                    expertise,
+                    charges,
+                    selectedCity,
+                    selectedExpertise,
+                    selectedJurisdiction,
+                    selectedLanguage,
+                    notes
+
+                });
+                if(response.status == 201){
+                    setTimeout(() => {
+                        navigate('/form/output')  
+                    }, 1500);
+                    Swal.fire(
+                        'YAYY!',
+                        'Successful Registration',
+                        'success'
+                    )
+                }
+                else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    })
+                }
+            }
+        }catch(err){
+            console.log(err);
+            if(err.response.data.message.includes('Email is already in use!!')){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email already in use :(',
+                })
+            }
+            else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
+            }
+        }
+    }
+
     const [values,setValues] =React.useState()
 
     const [selectedCity, setSelectedCity] = React.useState('');
+    const [experience, setExperience] = React.useState('');
+    const [notes, setNotes] = React.useState('');
+    const [charges,setCharges] = React.useState('');
+    console.log(experience)
+    console.log(charges)
+    console.log(notes)
+    
 
     const handleCityChange = (event) => {
         setSelectedCity(event.target.value);
+        // console.log(selectedCity)
     };
 
     const [selectedLanguage, setSelectedLanguage] = React.useState('');
+    console.log(selectedLanguage)
+
 
     const handleLanguageChange = (event) => {
         setSelectedLanguage(event.target.value);
+        
     };
 
     const [selectedJurisdiction, setSelectedJurisdiction] = React.useState('');
 
     const handleJurisdictionChange = (event) => {
         setSelectedJurisdiction(event.target.value);
+        // console.log(selectedJurisdiction)
     };
 
     const [selectedExpertise, setSelectedExpertise] = React.useState('');
 
     const handleExpertiseChange = (event) => {
         setSelectedExpertise(event.target.value);
+        // console.log(selectedExpertise)
     };
 
     const DrawerHeader = styled('div')(({ theme }) => ({
@@ -154,7 +229,7 @@ const Form = () => {
                                     Location <span style={{color:"red"}}>*</span>
                                 </Typography>
                                 <FormControl>
-               
+                
                 <Select
                   className="subject"
                   labelId="From-id"
@@ -233,8 +308,6 @@ const Form = () => {
                                     fontWeight: '700',
                                     lineHeight: '20px',
                                     marginBottom: '1em',
-
-
                                 }}>
                                     Lawyer Qualifications
                                 </Typography>
@@ -252,6 +325,8 @@ const Form = () => {
                                     Years of Experience
                                 </Typography>
                                 <TextField
+                                    value={experience}
+                                    onChange={(e)=>setExperience(e.target.value)}
                                     fullWidth />
                             </Grid>
 
@@ -362,6 +437,8 @@ const Form = () => {
                                     Charges(in Rs)
                                 </Typography>
                                 <TextField
+                                    values={charges}
+                                    onChange={(e)=>setCharges(e.target.value)}
                                     fullWidth />
                             </Grid>
 
@@ -395,9 +472,9 @@ const Form = () => {
                                     multiline
                                     fullWidth
                                     rows={6}
-                                    // defaultValue="Default Value"
+                                    value={notes}
+                                    onChange={(e)=>setNotes(e.target.value)}
                                     style={{
-                                        // width:'40vw',
                                         marginTop: '1em'
                                     }} />
                             </Grid>
@@ -412,9 +489,9 @@ const Form = () => {
 
                     }}> */}
                                 {/* <Link href='./RegistrationForm'> */}
-                                <Link to='/form/output'>
-                                <Button fullWidth className='proceed-button'>Find Lawyers</Button>
-                                </Link>
+                              
+                                <Button fullWidth className='proceed-button' onClick={handleSubmit}>Find Lawyers</Button>
+                               
                             </Grid>
 
 

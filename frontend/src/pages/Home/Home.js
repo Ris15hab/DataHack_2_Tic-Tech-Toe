@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import { Button, Typography } from '@mui/material';
 
 import Nav from '../../Components/Nav';
-
+import { Link } from 'react-router-dom';
 
 
 const Home = () => {
@@ -21,16 +21,24 @@ const Home = () => {
             
         }} className='text'>
             <Typography variant='h3' sx={{color:'white'}} className='welcome z-0'>
-            Elevate Expression: Where Gestures Find Voice 
-            <br/>– Welcome to [Name]!
+            We Work for Client Legal Success
+            <br/>– Welcome to ByLaw!
             </Typography>
+            <Link to='/sign-up'>
             <Button className='button'>
                 Get Started
             </Button>
+            </Link>
+            
             <Typography variant='h6'  sx={{color:'white',marginTop:1}}>
                 Already registered ? 
-                <a href='#'>Login</a>
+                <Link to='/login'>
+                Login
+                </Link>
+                
             </Typography>
+            
+            
           
         </Box>
        

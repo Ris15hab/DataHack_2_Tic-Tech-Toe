@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import NavAdmin from '../../Components/NavAdmin'
 import { Box, Chip } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
@@ -16,11 +16,36 @@ import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-
+import { Modal } from '@mui/material';
+import { Typography } from '@mui/material';
+import {TextField} from '@mui/material';
+import './ViewLayers.css'
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: 'none',
+    boxShadow: 24,
+    p: 4,
+    width:'50vw'
+};
 const ViewLawyers = () => {
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => 
+    {
+        setOpen(true);
+       
+             
+           
+    }
+    const handleClose = () => setOpen(false);
+
     const [search, setSearch] = useState('')
-    const domainsinIndia=[
+    const domainsinIndia = [
         "Corporate Law",
         "Consumer Protection Law",
         "Labor Law",
@@ -53,7 +78,7 @@ const ViewLawyers = () => {
         "Assamese",
         "Odia",
         "Marathi",
-    
+
     ];
     const citiesInIndia = [
         'Mumbai',
@@ -71,7 +96,7 @@ const ViewLawyers = () => {
     //     jusrisdiction:'high court',
     //     probo:'yes',
     //     languages:['hindi','english','marathi']
-        
+
     // }, {
     //     name: 'aasmi thadhani',
     //     location: 'mumbai',
@@ -81,7 +106,7 @@ const ViewLawyers = () => {
     //     jusrisdiction:'high court',
     //     probo:'yes',
     //     languages:['hindi','english','marathi']
-        
+
 
     // }, {
     //     name: 'rishab pendam',
@@ -105,16 +130,17 @@ const ViewLawyers = () => {
 
     // }
     // ])
-    const [pageNumber,setPageNumber] = useState(0);
-    const [users,setUsers] = useState([])
+    const [pageNumber, setPageNumber] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [users, setUsers] = useState([])
     const handleSearch = (e) => {
         setSearch(e.target.value)
     }
 
-    const handleFilterSubmit = async(e)=>{
-        try{
-            const response = await axios.post("http://localhost:8000/lawyer/getLawyerByFilter",{inpval})
-        }catch(err){
+    const handleFilterSubmit = async (e) => {
+        try {
+            const response = await axios.post("http://localhost:8000/lawyer/getLawyerByFilter", { inpval })
+        } catch (err) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -131,18 +157,20 @@ const ViewLawyers = () => {
         charges: ""
     });
 
-    const handleChange = (e)=>{
+    const handleChange = (e) => {
         const { value, name } = e.target;
         console.log(value)
         console.log(name)
 
         setInpval((preval) => {
-          return {
-            ...preval,
-            [name]: value,
-          };
+            return {
+                ...preval,
+                [name]: value,
+            };
         });
     }
+
+
 
     const DrawerHeader = styled('div')(({ theme }) => ({
         display: 'flex',
@@ -152,19 +180,21 @@ const ViewLawyers = () => {
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
     }));
-    
-    const fetchData = async()=>{
-        try{
-            setPageNumber(pageNumber+1)
+
+    const fetchData = async () => {
+        try {
+            setLoading(false)
+            setPageNumber(pageNumber + 1)
             const response = await axios.get(`http://localhost:8000/lawyer/getAllLawyer?page_number=${pageNumber}`)
             // console.log(response)
-            if(response.status == 200){
+            if (response.status == 200) {
                 setUsers(response.data.lawyer)
+                setLoading(true)
                 // console.log(response)
                 // console.log(response.data.lawyer)
             }
             // console.log(users)
-        }catch(err){
+        } catch (err) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -172,9 +202,9 @@ const ViewLawyers = () => {
             })
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         fetchData();
-    },[])
+    }, [])
 
     console.log(users)
     return (
@@ -209,7 +239,7 @@ const ViewLawyers = () => {
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
-                      <InputLabel id="demo-controlled-open-select-label">Experience</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label">Experience</InputLabel>
                         <Select
                             name="experience"
                             value={inpval.experience}
@@ -226,7 +256,7 @@ const ViewLawyers = () => {
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
-                      <InputLabel id="demo-controlled-open-select-label">Charges</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label">Charges</InputLabel>
                         <Select
                             name="charges"
                             value={inpval.charges}
@@ -243,7 +273,7 @@ const ViewLawyers = () => {
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
-                      <InputLabel id="demo-controlled-open-select-label">Languages</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label">Languages</InputLabel>
                         <Select
                             name="language"
                             value={inpval.language}
@@ -252,17 +282,17 @@ const ViewLawyers = () => {
                             id="demo-controlled-open-select"
                         >
                             {
-                        languagesInIndia.map((language,index)=>(
-                        <MenuItem key={index} value={language}>
-                            {language}
-                        </MenuItem>
-                    ))
-                  }
+                                languagesInIndia.map((language, index) => (
+                                    <MenuItem key={index} value={language}>
+                                        {language}
+                                    </MenuItem>
+                                ))
+                            }
                         </Select>
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
-                      <InputLabel id="demo-controlled-open-select-label">Location</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label">Location</InputLabel>
                         <Select
                             name="city"
                             value={inpval.city}
@@ -270,18 +300,18 @@ const ViewLawyers = () => {
                             labelId="demo-controlled-open-select-label"
                             id="demo-controlled-open-select"
                         >
-                             {
-                        citiesInIndia.map((cities,index)=>(
-                        <MenuItem key={index} value={cities}>
-                            {cities}
-                        </MenuItem>
-                    ))
-                  }
+                            {
+                                citiesInIndia.map((cities, index) => (
+                                    <MenuItem key={index} value={cities}>
+                                        {cities}
+                                    </MenuItem>
+                                ))
+                            }
                         </Select>
                     </FormControl>
 
                     <FormControl sx={{ m: 1, minWidth: 140 }}>
-                      <InputLabel id="demo-controlled-open-select-label">Domain</InputLabel>
+                        <InputLabel id="demo-controlled-open-select-label">Domain</InputLabel>
                         <Select
                             name="domain"
                             value={inpval.domain}
@@ -290,22 +320,32 @@ const ViewLawyers = () => {
                             id="demo-controlled-open-select"
                         >
                             {
-                        domainsinIndia.map((domains,index)=>(
-                        <MenuItem key={index} value={domains}>
-                            {domains}
-                        </MenuItem>
-                    ))
-                  }
+                                domainsinIndia.map((domains, index) => (
+                                    <MenuItem key={index} value={domains}>
+                                        {domains}
+                                    </MenuItem>
+                                ))
+                            }
                         </Select>
                     </FormControl>
                     <span onClick={handleFilterSubmit}>
-                    
-                    <SearchIcon sx={{marginBottom:"-5vh",marginLeft:"1vw",fontSize:"25px",cursor:"pointer"}}/>
-                    
+
+                        <SearchIcon sx={{ marginBottom: "-5vh", marginLeft: "1vw", fontSize: "25px", cursor: "pointer" }} />
+
                     </span>
-    
+
                     <Grid container spacing={0}>
                         {
+                            !loading&&
+                            <Box sx={{marginTop:"30vh",marginLeft:"45vw"}}>
+                            <div class="three-body">
+                            <div class="three-body__dot"></div>
+                            <div class="three-body__dot"></div>
+                            <div class="three-body__dot"></div>
+                            </div>
+                            </Box>
+                        }
+                        {loading&&
                             users.filter((user) => {
                                 return search.toLowerCase() === ""
                                     ? user
@@ -319,11 +359,11 @@ const ViewLawyers = () => {
                                         </h5>
                                         <p className="font-normal text-gray-700 dark:text-gray-400">
                                             <p style={{
-                                                display:'flex',
-                                                float:'right',
+                                                display: 'flex',
+                                                float: 'right',
 
                                             }}>
-                                                <LocationOnIcon/>
+                                                <LocationOnIcon />
                                                 {values.location}
                                             </p>
                                             <p>
@@ -331,61 +371,65 @@ const ViewLawyers = () => {
 
                                                 {values.experience}
                                             </p>
-                                           
+
                                             <p style={{
-                                                marginTop:'0.3em'
+                                                marginTop: '0.3em'
                                             }}>
-                                               <b> Charges(in Rs): </b>
+                                                <b> Charges(in Rs): </b>
                                                 {values.charges}
                                             </p>
                                             <p style={{
-                                                marginTop:'0.5em'
+                                                marginTop: '0.5em'
                                             }}>
-                                              
-                                              <b>Domain: </b>
+
+                                                <b>Domain: </b>
 
                                                 {values.domain}
-                                               
-                                           </p>
-                                           <p style={{
-                                                marginTop:'0.5em'
+
+                                            </p>
+                                            <p style={{
+                                                marginTop: '0.5em'
                                             }}>
-                                              
-                                              <b>Jurisdiction: </b>
+
+                                                <b>Jurisdiction: </b>
 
                                                 {values.jurisdiction}
-                                               
-                                           </p>
-                                           <p style={{
-                                                marginTop:'0.5em'
-                                            }}>
-                                              
-                                              <b>Pro bono: </b>
 
-                                                {values.proBono?'Yes':'No'}
-                                               
-                                           </p>
-
-                                           <p style={{
-                                                marginTop:'0.5em'
+                                            </p>
+                                            <p style={{
+                                                marginTop: '0.5em'
                                             }}>
-                                            {  
-                                            values.languages.map((values)=>
-                                            (
-                                                <Chip label = {values} style={{marginRight:'0.6em'}}/>
-                                            ))
-                        }
-                                               
-                                           </p>
+
+                                                <b>Pro bono: </b>
+
+                                                {values.proBono ? 'Yes' : 'No'}
+
+                                            </p>
+
+                                            <p style={{
+                                                marginTop: '0.5em'
+                                            }}>
+                                                {
+                                                    values.languages.map((values) =>
+                                                    (
+                                                        <Chip label={values} style={{ marginRight: '0.6em' }} />
+                                                    ))
+                                                }
+
+                                            </p>
                                         </p>
+
                                         <Button style={{
                                             backgroundColor: '#02003E'
-                                        }}>
+                                        }} onClick={handleOpen}>
+
                                             <p>
                                                 Contact
                                             </p>
 
                                         </Button>
+
+
                                     </Card>
                                 </Grid>
 
@@ -400,14 +444,53 @@ const ViewLawyers = () => {
 
                     </Grid>
 
-                    <div style={{marginTop:"2vh", display:'flex',float:'right',marginRight:'2vw'}}>
-                    <Button style={{backgroundColor: '#02003E'}} onClick={()=>fetchData()}>
-                        Next Page
-                    </Button>
+                    <div style={{ marginTop: "2vh", display: 'flex', float: 'right', marginRight: '2vw' }}>
+                        <Button style={{ backgroundColor: '#02003E' }} onClick={() => fetchData()}>
+                            Next Page
+                        </Button>
 
                     </div>
                 </Box>
             </Box>
+
+
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h4" component="h2">
+                        Contact Us
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                       Describe your Issue:
+                    </Typography>
+                    <TextField multiline rows={8} fullWidth/>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                       Phone No:
+                    </Typography>
+                    <TextField fullWidth style={{ marginBottom:'1em'}}/>
+                    
+                    <Box display='flex' flexDirection='column' alignItems='center'>
+                    <Button className='proceed-button' onClick={()=>
+                    {
+                        handleClose()
+                        Swal.fire(
+                            'Good job!',
+                            'Contact sent Successfully',
+                            'success'
+                          )
+                    }}>
+
+                        Submit
+                    </Button>
+                    </Box>
+                    
+
+                </Box>
+            </Modal>
         </Box>
     )
 }
