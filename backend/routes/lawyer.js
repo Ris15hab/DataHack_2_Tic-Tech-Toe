@@ -1,4 +1,4 @@
-const {add,getListOfDomains,getListOfCities,getListOfLanguages, getListOfJurisdiction,getAllLawyer, getLawyerByExperience ,getLawyerByCharge ,getLawyerByLocation} = require('../controllers/lawyer')
+const {add,getListOfDomains,getListOfCities,getListOfLanguages, getListOfJurisdiction,getAllLawyer, getLawyerByExperience ,getLawyerByCharge ,getLawyerByLocation,getLawyerByFilter} = require('../controllers/lawyer')
 const express = require('express')
 const router = express.Router()
 
@@ -11,5 +11,6 @@ router.get('/getAllLawyer',getAllLawyer);
 router.get('/getLawyerByExperience',getLawyerByExperience)
 router.get('/getLawyerByCharge',getLawyerByCharge);
 router.get('/getLawyerByLocation',getLawyerByLocation);
+router.post('/getLawyerByFilter',getLawyerByFilter)
 
 module.exports = router

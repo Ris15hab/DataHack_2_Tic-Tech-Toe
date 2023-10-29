@@ -136,7 +136,18 @@ const getLawyerByLocation = async(req,res,next)=>{
     }
 }
 
-
+const getLawyerByFilter = async(req,res,next)=>{
+    try{
+        const {inpval} = req.body;
+        let whereClause = [];
+        if(inpval.experience){
+            whereClause.experience = inpval.experience
+        }
+        console.log(whereClause)
+    }catch(err){
+        next(err);
+    }
+}
 
 module.exports = {
     add,
@@ -147,5 +158,6 @@ module.exports = {
     getAllLawyer,
     getLawyerByExperience,
     getLawyerByCharge,
-    getLawyerByLocation
+    getLawyerByLocation,
+    getLawyerByFilter
 }
